@@ -4,11 +4,7 @@ import './App.css';
 import BarChart from './BarChart'
 import ComplexBarChart from './BarChart'
 
-const ChannelsList = () =>
-  (<ul>
-    <li>Channel 1</li>
-    <li>Channel 2</li>
-  </ul>);
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -39,14 +35,9 @@ class App extends Component {
     const divs = data.map((d, i) => <div key={i}>{d}</div>)
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header> */}
-        <BarChart data={this.state.data} size={[500, 500]} />
-        <ChannelsList />
 
-        {/* <ComplexBarChart xLabel='Characters' yLabel='Occurrences' /> */}
+        <BarChart data={this.state.data} size={[500, 500]} />
+
         <button onClick={this.randomDataFire}>New Random data</button>
 
       </div>
