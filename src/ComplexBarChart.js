@@ -1,93 +1,68 @@
 
 "use strict"
 
-import React, { Component } from 'react'
-var ReactDOM = require('react-dom');
-var Chart = require('react-d3-core').Chart;
-var LineChart = require('react-d3-basic').LineChart;
+import React from 'react'
+import ReactDOM from 'react-dom';
+import * as V from 'victory';
 
-class ComplexBarChart extends React {
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 
-}
-// load your general data
-var chartData = [
-    {
-        name: "Lavon Hilll I",
-        BMI: 20.57,
-        age: 12,
-        birthday: "1994-10-26T00:00:00.000Z",
-        city: "Annatown",
-        married: true,
-        index: 1
-    },
-    {
-        name: "Clovis Pagac",
-        BMI: 24.28,
-        age: 26,
-        birthday: "1995-11-10T00:00:00.000Z",
-        city: "South Eldredtown",
-        married: false,
-        index: 3
-    },
-    {
-        name: "Gaylord Paucek",
-        BMI: 24.41,
-        age: 30,
-        birthday: "1975-06-12T00:00:00.000Z",
-        city: "Koeppchester",
-        married: true,
-        index: 5
-    },
-    {
-        name: "Ashlynn Kuhn MD",
-        BMI: 23.77,
-        age: 32,
-        birthday: "1985-08-09T00:00:00.000Z",
-        city: "West Josiemouth",
-        married: false,
-        index: 6
-    },
 
-];
-
-var width = 700,
-    height = 300,
-    margins = { left: 100, right: 100, top: 50, bottom: 50 },
-    title = "User sample",
-    // chart series,
-    // field: is what field your data want to be selected
-    // name: the name of the field that display in legend
-    // color: what color is the line
-    chartSeries = [
-        {
-            field: 'BMI',
-            name: 'BMI',
-            color: '#ff7f0e'
+export default class ComplexBarChart extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            data: [],
         }
-    ],
-    // your x accessor
-    x = function (d) {
-        return d.index;
+
     }
 
-ReactDOM.render(
-    <Chart
-        title={title}
-        width={width}
-        height={height}
-        margins={margins}
-    >
-        <LineChart
-            showXGrid={false}
-            showYGrid={false}
-            margins={margins}
-            title={title}
-            data={chartData}
-            width={width}
-            height={height}
-            chartSeries={chartSeries}
-            x={x}
-        />
-    </Chart>
-    , document.getElementById('line-user')
-)
+    randomDataFire = () => {
+        let dataArray = []
+        for (var i = 0; i < 4; i++) {
+            //need to add plus one otherwise it starts at zero and breaks the padding
+            dataArray.push({ quarter: (i + 1), earnings: Math.floor(Math.random() * 10000) + 1 })
+
+        }
+        this.setState({ data: dataArray })
+        console.log(this.state)
+    }
+
+    render() {
+
+        return (
+            <div style={{ maxHeight: '250px', maxWidth: '500px' }}>
+
+
+
+                <VictoryChart
+                    // domainPadding will add space to each side of VictoryBar to
+                    // prevent it from overlapping the axis
+                    domainPadding={20}
+                    theme={VictoryTheme.material}
+                >
+                    <VictoryAxis
+                        // tickValues specifies both the number of ticks and where
+                        // they are placed on the axis
+                        tickValues={[1, 2, 3, 4]}
+                        tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        // tickFormat specifies how ticks should be displayed
+                        tickFormat={(x) => (`$${x / 100}k`)}
+                    />
+                    <VictoryBar
+                        data={this.state.data}
+                        x="quarter"
+                        y="earnings"
+                    />
+                </VictoryChart>
+
+                <button onClick={this.randomDataFire}>New Random data</button>
+            </div>
+        )
+    }
+}
+
+// export default ComplexBarChart
